@@ -5,7 +5,7 @@ exports.getAllLogs = async (req, res) => {
   try {
     const logs = await Log.find()
       .sort({ timestamp: -1 })
-      .populate('user', 'name email role');
+      .populate('user', 'firstName middleName lastName email role');
     
     res.json(logs);
   } catch (error) {

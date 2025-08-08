@@ -7,21 +7,27 @@ const connectDB = require('../config/db');
 // Initial users data
 const users = [
   {
-    name: 'Admin User',
+    firstName: 'Admin',
+    middleName: '',
+    lastName: 'User',
     email: 'admin@example.com',
-    password: 'admin123',
+    password: 'password123',
     role: 'admin'
   },
   {
-    name: 'Editor User',
+    firstName: 'Editor',
+    middleName: '',
+    lastName: 'User',
     email: 'editor@example.com',
-    password: 'editor123',
+    password: 'password123',
     role: 'editor'
   },
   {
-    name: 'Viewer User',
+    firstName: 'Viewer',
+    middleName: '',
+    lastName: 'User',
     email: 'viewer@example.com',
-    password: 'viewer123',
+    password: 'password123',
     role: 'viewer'
   }
 ];

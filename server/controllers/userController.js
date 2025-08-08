@@ -53,7 +53,7 @@ exports.updateUserRole = async (req, res) => {
     await Log.create({
       user: req.user._id,
       action: 'Update User Role',
-      details: `User ${req.user.name} updated role of ${user.name} to ${role}`
+      details: `User ${req.user.firstName} ${req.user.lastName} updated role of ${user.firstName} ${user.lastName} to ${role}`
     });
     
     res.json({
@@ -87,7 +87,7 @@ exports.deleteUser = async (req, res) => {
     await Log.create({
       user: req.user._id,
       action: 'Delete User',
-      details: `User ${req.user.name} deleted user ${user.name}`
+      details: `User ${req.user.firstName} ${req.user.lastName} deleted user ${user.firstName} ${user.lastName}`
     });
     
     res.json({ message: 'User deleted successfully' });

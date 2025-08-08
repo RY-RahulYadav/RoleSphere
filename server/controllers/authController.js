@@ -5,7 +5,7 @@ require('dotenv').config();
 // Register a new user
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { firstName, middleName, lastName, email, password, role } = req.body;
 
     // Check if user already exists
     let user = await User.findOne({ email });
@@ -15,7 +15,9 @@ exports.register = async (req, res) => {
 
     // Create new user (role will default to 'viewer' if not provided)
     user = new User({
-      name,
+      firstName,
+      middleName,
+      lastName,
       email,
       password,
       role: role || 'viewer'
@@ -35,7 +37,9 @@ exports.register = async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        middleName: user.middleName,
+        lastName: user.lastName,
         email: user.email,
         role: user.role
       }
@@ -75,7 +79,9 @@ exports.login = async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        middleName: user.middleName,
+        lastName: user.lastName,
         email: user.email,
         role: user.role
       }
@@ -94,7 +100,9 @@ exports.getCurrentUser = async (req, res) => {
 
     res.json({
       id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      middleName: user.middleName,
+      lastName: user.lastName,
       email: user.email,
       role: user.role
     });
@@ -107,7 +115,7 @@ exports.getCurrentUser = async (req, res) => {
 // Update user profile
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, email, currentPassword, newPassword } = req.body;
+    const { firstName, middleName, lastName, email, currentPassword, newPassword } = req.body;
     
     // Get the current user
     const user = await User.findById(req.user._id);
@@ -117,7 +125,9 @@ exports.updateProfile = async (req, res) => {
     }
     
     // Update basic info
-    if (name) user.name = name;
+    if (firstName) user.firstName = firstName;
+    if (middleName !== undefined) user.middleName = middleName;
+    if (lastName) user.lastName = lastName;
     if (email) user.email = email;
     
     // Handle password change if provided
@@ -143,7 +153,9 @@ exports.updateProfile = async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        middleName: user.middleName,
+        lastName: user.lastName,
         email: user.email,
         role: user.role
       }

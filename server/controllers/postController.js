@@ -19,7 +19,7 @@ exports.createPost = async (req, res) => {
     await Log.create({
       user: req.user._id,
       action: 'Create Post',
-      details: `User ${req.user.name} created post: ${title}`
+      details: `User ${req.user.firstName} ${req.user.lastName} created post: ${title}`
     });
     
     res.status(201).json({
@@ -37,7 +37,7 @@ exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .populate('author', 'name email');
+      .populate('author', 'firstName middleName lastName email role');
     
     res.json(posts);
   } catch (error) {
@@ -52,7 +52,7 @@ exports.getEditorPosts = async (req, res) => {
     // Only fetch posts created by the logged-in editor
     const posts = await Post.find({ author: req.user._id })
       .sort({ createdAt: -1 })
-      .populate('author', 'name email');
+      .populate('author', 'firstName middleName lastName email role');
     
     res.json(posts);
   } catch (error) {
@@ -65,7 +65,7 @@ exports.getEditorPosts = async (req, res) => {
 exports.getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate('author', 'name email');
+      .populate('author', 'firstName middleName lastName email role');
     
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
@@ -104,13 +104,13 @@ exports.updatePost = async (req, res) => {
         updatedAt: Date.now()
       },
       { new: true }
-    ).populate('author', 'name email');
+    ).populate('author', 'firstName middleName lastName email role');
     
     // Log this action
     await Log.create({
       user: req.user._id,
       action: 'Update Post',
-      details: `User ${req.user.name} updated their post: ${title}`
+      details: `User ${req.user.firstName} ${req.user.lastName} updated their post: ${title}`
     });
     
     res.json({
@@ -145,7 +145,7 @@ exports.deletePost = async (req, res) => {
     await Log.create({
       user: req.user._id,
       action: 'Delete Post',
-      details: `User ${req.user.name} deleted their post: ${post.title}`
+      details: `User ${req.user.firstName} ${req.user.lastName} deleted their post: ${post.title}`
     });
     
     res.json({ message: 'Post deleted successfully' });
@@ -180,7 +180,7 @@ exports.likePost = async (req, res) => {
     await Log.create({
       user: req.user._id,
       action: 'Like Post',
-      details: `User ${req.user.name} liked post: ${post.title}`
+      details: `User ${req.user.firstName} ${req.user.lastName} liked post: ${post.title}`
     });
     
     res.json({ message: 'Post liked', likes: post.likes.length });
@@ -217,14 +217,14 @@ exports.addComment = async (req, res) => {
     
     // Populate author info for the newly added comment
     const updatedPost = await Post.findById(req.params.id)
-      .populate('author', 'name')
-      .populate('comments.author', 'name');
+      .populate('author', 'firstName middleName lastName email role')
+      .populate('comments.author', 'firstName middleName lastName email role');
       
     // Log this action
     await Log.create({
       user: req.user._id,
       action: 'Comment on Post',
-      details: `User ${req.user.name} commented on post: ${post.title}`
+      details: `User ${req.user.firstName} ${req.user.lastName} commented on post: ${post.title}`
     });
     
     res.status(201).json({
