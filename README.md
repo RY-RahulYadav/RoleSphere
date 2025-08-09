@@ -1,4 +1,4 @@
-# Role-Based Access Control Dashboard
+# RoleSphere - Role-Based Access Control Dashboard
 
 A full-stack application with Next.js frontend and Node.js/Express backend demonstrating role-based access control and permissions.
 
@@ -60,7 +60,8 @@ A full-stack application with Next.js frontend and Node.js/Express backend demon
     ├── controllers/      # Route controllers
     ├── middleware/       # Express middleware
     ├── models/           # Mongoose models
-    └── routes/           # API routes
+    ├── routes/           # API routes
+    └── scripts/          # Utility scripts including database seeding
 ```
 
 ## Getting Started
@@ -68,57 +69,115 @@ A full-stack application with Next.js frontend and Node.js/Express backend demon
 ### Prerequisites
 
 - Node.js (v14+)
-- MongoDB
+- MongoDB (local instance or MongoDB Atlas)
 
 ### Installation
 
 1. Clone the repository
+   ```bash
+   git clone https://github.com/RY-RahulYadav/RoleSphere.git
+   cd RoleSphere
+   ```
+
 2. Install dependencies for both client and server:
+   ```bash
+   # Install server dependencies
+   cd server
+   npm install
 
-```bash
-# Install server dependencies
-cd server
-npm install
-
-# Install client dependencies
-cd ../client
-npm install
-```
+   # Install client dependencies
+   cd ../client
+   npm install
+   ```
 
 3. Configure environment variables:
    - Create a `.env` file in the server directory with the following:
+   ```
+   PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/rolesphere
+   JWT_SECRET=your_jwt_secret_key_change_this_in_production
+   ```
+   
+   > Note: You can use a local MongoDB instance or MongoDB Atlas. If using Atlas, your connection string will look like: `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/rolesphere`
 
-```
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/admin-dashboard
-JWT_SECRET=your_jwt_secret_key_change_this_in_production
-```
+### Database Seeding
+
+To populate the database with initial users and roles:
+
+1. Navigate to the server directory:
+   ```bash
+   cd server
+   ```
+
+2. Run the seed script:
+   ```bash
+   npm run seed
+   ```
+
+3. This will create three default users with the following credentials:
+
+   | Role    | Email               | Password    |
+   |---------|---------------------|-------------|
+   | Admin   | admin@example.com   | password123 |
+   | Editor  | editor@example.com  | password123 |
+   | Viewer  | viewer@example.com  | password123 |
+
+   > **Important**: Change these default passwords in a production environment.
 
 ### Running the Application
 
 #### Development Mode
 
 1. Start the server:
+   ```bash
+   cd server
+   npm run dev
+   ```
 
-```bash
-cd server
-npm run dev
-```
-
-2. Start the client:
-
-```bash
-cd client
-npm run dev
-```
+2. In a new terminal, start the client:
+   ```bash
+   cd client
+   npm run dev
+   ```
 
 3. Access the application at `http://localhost:3000`
 
-## User Roles
+#### Production Mode
 
-1. **Admin**: Full access to all features including user management and logs
-2. **Editor**: Can create, edit, and delete content, but cannot access user management or logs
-3. **Viewer**: Can only view content, no edit capabilities
+1. Build the client:
+   ```bash
+   cd client
+   npm run build
+   ```
+
+2. Start the server:
+   ```bash
+   cd ../server
+   npm start
+   ```
+
+3. Start the client:
+   ```bash
+   cd ../client
+   npm start
+   ```
+
+## User Roles and Permissions
+
+1. **Admin**:
+   - Full access to all features
+   - User management (create, update roles, delete)
+   - System logs viewing
+   - Content management
+
+2. **Editor**:
+   - Create, edit, and delete their own posts
+   - Cannot access user management or logs
+
+3. **Viewer**:
+   - Can only view content
+   - No edit capabilities
+   - Limited dashboard access
 
 ## Security Implementation
 
@@ -127,3 +186,4 @@ npm run dev
 - JWT token validation on all protected routes
 - Password hashing for secure storage
 - Activity logging for security auditing
+- Automatic post deletion when a user is deleted
