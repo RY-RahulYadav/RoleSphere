@@ -14,6 +14,7 @@ const users = [
     password: 'password123',
     role: 'admin'
   },
+  
   {
     firstName: 'Editor',
     middleName: '',
