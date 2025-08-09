@@ -44,6 +44,7 @@ export default function Home() {
             <Link href="/login" className="bg-brand-gradient hover:opacity-90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
               Get Started <ArrowRight size={16} className="ml-1" />
             </Link>
+            
           </nav>
           
           {/* Mobile Menu Button */}
