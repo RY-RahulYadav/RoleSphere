@@ -31,6 +31,7 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
     else return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
   };
 
+  
   const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB maximum file size
   
   const handleImageInput = (e: ChangeEvent<HTMLInputElement>) => {
