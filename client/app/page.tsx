@@ -38,9 +38,9 @@ export default function Home() {
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/login" className="text-gray-700 hover:text-brand-primary font-medium">
+            {/* <Link href="/login" className="text-gray-700 hover:text-brand-primary font-medium">
               Login
-            </Link>
+            </Link> */}
             <Link href="/login" className="bg-brand-gradient hover:opacity-90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
               Get Started <ArrowRight size={16} className="ml-1" />
             </Link>
