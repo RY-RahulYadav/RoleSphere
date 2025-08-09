@@ -123,35 +123,35 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Mobile Menu Toggle Button */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
+      <div className="lg:hidden fixed top-3.5 left-3 sm:top-4 sm:left-4 z-50">
         <button 
           onClick={toggleMobileMenu}
-          className="p-2 rounded-full bg-white shadow-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+          className="p-1.5 sm:p-2 rounded-full bg-white shadow-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
           aria-label="Toggle menu"
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={20} className="sm:size-[24px]" /> : <Menu size={20} className="sm:size-[24px]" />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       <div className={`${mobileMenuClasses} lg:hidden`}>
-        <div className="p-6 flex justify-between items-center border-b border-slate-700/50">
+        <div className="p-4 sm:p-6 flex justify-between items-center border-b border-slate-700/50">
           <div className="flex items-center">
-            <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${roleColor} flex items-center justify-center text-white font-bold shadow-lg`}>
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r ${roleColor} flex items-center justify-center text-white font-bold shadow-lg`}>
               {user?.firstName?.charAt(0).toUpperCase() || ''}
             </div>
-            <div className="ml-3">
-              <p className="font-medium text-white">{user.firstName} {user.lastName}</p>
-              <p className="text-sm text-gray-300 capitalize">{user.role}</p>
+            <div className="ml-2 sm:ml-3">
+              <p className="font-medium text-white text-sm sm:text-base">{user.firstName} {user.lastName}</p>
+              <p className="text-xs sm:text-sm text-gray-300 capitalize">{user.role}</p>
             </div>
           </div>
-          <button onClick={toggleMobileMenu} className="p-2 rounded-full hover:bg-slate-700/50 transition-colors">
-            <X size={24} className="text-white" />
+          <button onClick={toggleMobileMenu} className="p-1.5 sm:p-2 rounded-full hover:bg-slate-700/50 transition-colors">
+            <X size={20} className="text-white sm:size-[24px]" />
           </button>
         </div>
         
-        <nav className="flex-grow p-6 overflow-y-auto">
-          <ul className="space-y-3">
+        <nav className="flex-grow p-4 sm:p-6 overflow-y-auto">
+          <ul className="space-y-2 sm:space-y-3">
             {navItems.map((item) => {
               if (hasRole(user, item.roles)) {
                 return (
@@ -159,16 +159,16 @@ const Sidebar: React.FC = () => {
                     <Link
                       href={item.path}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center p-3 rounded-xl transition-all ${
+                      className={`flex items-center p-2.5 sm:p-3 rounded-xl transition-all ${
                         isActive(item.path) 
                           ? `bg-gradient-to-r ${roleColor} text-white shadow-md` 
                           : 'text-white hover:bg-white/10'
                       }`}
                     >
-                      <span className="mr-3">{item.icon}</span>
-                      <span className="font-medium">{item.label}</span>
+                      <span className="mr-2.5 sm:mr-3">{item.icon}</span>
+                      <span className="font-medium text-sm sm:text-base">{item.label}</span>
                       {item.badge && (
-                        <span className={`ml-auto ${item.badge.color} text-white text-xs font-medium px-2 py-1 rounded-full`}>
+                        <span className={`ml-auto ${item.badge.color} text-white text-xs font-medium px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full`}>
                           {item.badge.count}
                         </span>
                       )}
@@ -179,13 +179,13 @@ const Sidebar: React.FC = () => {
               return null;
             })}
             
-            <li className="pt-6 mt-6 border-t border-slate-700/50 animate-fade-in" style={{animationDelay: '0.2s'}}>
+            <li className="pt-4 mt-4 sm:pt-6 sm:mt-6 border-t border-slate-700/50 animate-fade-in" style={{animationDelay: '0.2s'}}>
               <button
                 onClick={logout}
-                className="flex items-center p-3 w-full text-left rounded-xl text-white hover:bg-white/10 transition-colors"
+                className="flex items-center p-2.5 sm:p-3 w-full text-left rounded-xl text-white hover:bg-white/10 transition-colors"
               >
-                <LogOut size={20} className="mr-3" />
-                <span className="font-medium">Logout</span>
+                <LogOut size={18} className="mr-2.5 sm:mr-3 sm:text-[20px]" />
+                <span className="font-medium text-sm sm:text-base">Logout</span>
               </button>
             </li>
           </ul>

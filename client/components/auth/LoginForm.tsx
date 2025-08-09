@@ -39,31 +39,31 @@ export default function LoginForm() {
   // Login handler defined above
 
   return (
-    <div className="bg-white p-8 sm:p-10 rounded-xl shadow-xl w-full max-w-md border border-gray-100">
-      <h2 className="text-2xl font-bold mb-2 text-center bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">Welcome Back</h2>
-      <p className="text-gray-500 text-center mb-8">Sign in to access your dashboard</p>
+    <div className="bg-white p-5 sm:p-8 md:p-10 rounded-xl shadow-xl w-full max-w-md border border-gray-100">
+      <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-center bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">Welcome Back</h2>
+      <p className="text-sm sm:text-base text-gray-500 text-center mb-6 sm:mb-8">Sign in to access your dashboard</p>
       
       {error && (
-        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md flex items-start">
-          <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
-          <p>{error}</p>
+        <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-3 sm:p-4 mb-4 sm:mb-6 rounded-md flex items-start">
+          <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0 mt-0.5" />
+          <p className="text-sm">{error}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <div>
-          <label className="block text-gray-700 text-sm font-medium mb-2">
+          <label className="block text-gray-700 text-xs sm:text-sm font-medium mb-1.5 sm:mb-2">
             Email Address
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Mail className="h-5 w-5 text-gray-400" />
+              <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
             </div>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+              className="block w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
               placeholder="you@example.com"
               required
             />
@@ -71,20 +71,20 @@ export default function LoginForm() {
         </div>
         
         <div>
-          <div className="mb-2">
-            <label className="block text-gray-700 text-sm font-medium">
+          <div className="mb-1.5 sm:mb-2">
+            <label className="block text-gray-700 text-xs sm:text-sm font-medium">
               Password
             </label>
           </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock className="h-5 w-5 text-gray-400" />
+              <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
             </div>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+              className="block w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
               placeholder="••••••••"
               required
             />
@@ -95,15 +95,15 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center items-center py-2.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70"
+            className="w-full flex justify-center items-center py-2 sm:py-2.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70"
           >
             {isLoading ? (
               <>
-                <Loader2 className="animate-spin h-5 w-5 mr-2" />
-                Signing in...
+                <Loader2 className="animate-spin h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2" />
+                <span className="text-sm sm:text-base">Signing in...</span>
               </>
             ) : (
-              'Sign In'
+              <span className="text-sm sm:text-base">Sign In</span>
             )}
           </button>
         </div>

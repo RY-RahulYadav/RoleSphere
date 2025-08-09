@@ -12,23 +12,23 @@ export default function DashboardOverview() {
   
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-8">Welcome, {user?.name}</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-5 sm:mb-8">Welcome, {user?.firstName}</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100 text-blue-600">
-              <FileText size={24} />
+            <div className="p-2 sm:p-3 rounded-full bg-blue-100 text-blue-600">
+              <FileText size={20} className="sm:size-[24px]" />
             </div>
-            <div className="ml-4">
-              <p className="text-gray-500 text-sm">Content</p>
-              <p className="text-xl font-semibold">Posts</p>
+            <div className="ml-3 sm:ml-4">
+              <p className="text-gray-500 text-xs sm:text-sm">Content</p>
+              <p className="text-lg sm:text-xl font-semibold">Posts</p>
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-3 sm:mt-4">
             <a 
               href="/dashboard/posts" 
-              className="text-blue-500 hover:text-blue-700 text-sm font-medium"
+              className="text-blue-500 hover:text-blue-700 text-xs sm:text-sm font-medium"
             >
               View all posts →
             </a>
@@ -36,20 +36,20 @@ export default function DashboardOverview() {
         </div>
         
         {isEditor && (
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-green-100 text-green-600">
-                <FileText size={24} />
+              <div className="p-2 sm:p-3 rounded-full bg-green-100 text-green-600">
+                <FileText size={20} className="sm:size-[24px]" />
               </div>
-              <div className="ml-4">
-                <p className="text-gray-500 text-sm">Management</p>
-                <p className="text-xl font-semibold">Content Management</p>
+              <div className="ml-3 sm:ml-4">
+                <p className="text-gray-500 text-xs sm:text-sm">Management</p>
+                <p className="text-lg sm:text-xl font-semibold">Content Management</p>
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-3 sm:mt-4">
               <a 
                 href="/dashboard/posts" 
-                className="text-green-500 hover:text-green-700 text-sm font-medium"
+                className="text-green-500 hover:text-green-700 text-xs sm:text-sm font-medium"
               >
                 Create or edit content →
               </a>
@@ -59,40 +59,40 @@ export default function DashboardOverview() {
         
         {isAdmin && (
           <>
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-lg shadow p-4 sm:p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-purple-100 text-purple-600">
-                  <Users size={24} />
+                <div className="p-2 sm:p-3 rounded-full bg-purple-100 text-purple-600">
+                  <Users size={20} className="sm:size-[24px]" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-gray-500 text-sm">Administration</p>
-                  <p className="text-xl font-semibold">User Management</p>
+                <div className="ml-3 sm:ml-4">
+                  <p className="text-gray-500 text-xs sm:text-sm">Administration</p>
+                  <p className="text-lg sm:text-xl font-semibold">User Management</p>
                 </div>
               </div>
-              <div className="mt-4">
+              <div className="mt-3 sm:mt-4">
                 <a 
                   href="/dashboard/users" 
-                  className="text-purple-500 hover:text-purple-700 text-sm font-medium"
+                  className="text-purple-500 hover:text-purple-700 text-xs sm:text-sm font-medium"
                 >
                   Manage users →
                 </a>
               </div>
             </div>
             
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-lg shadow p-4 sm:p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-orange-100 text-orange-600">
-                  <Activity size={24} />
+                <div className="p-2 sm:p-3 rounded-full bg-orange-100 text-orange-600">
+                  <Activity size={20} className="sm:size-[24px]" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-gray-500 text-sm">Monitoring</p>
-                  <p className="text-xl font-semibold">System Logs</p>
+                <div className="ml-3 sm:ml-4">
+                  <p className="text-gray-500 text-xs sm:text-sm">Monitoring</p>
+                  <p className="text-lg sm:text-xl font-semibold">System Logs</p>
                 </div>
               </div>
-              <div className="mt-4">
+              <div className="mt-3 sm:mt-4">
                 <a 
                   href="/dashboard/logs" 
-                  className="text-orange-500 hover:text-orange-700 text-sm font-medium"
+                  className="text-orange-500 hover:text-orange-700 text-xs sm:text-sm font-medium"
                 >
                   View activity logs →
                 </a>
@@ -102,28 +102,28 @@ export default function DashboardOverview() {
         )}
       </div>
       
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-semibold mb-4">Your Role Permissions</h2>
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Your Role Permissions</h2>
         
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           <div className="flex items-center">
-            <div className={`h-3 w-3 rounded-full ${isAdmin ? 'bg-green-500' : 'bg-gray-300'} mr-2`}></div>
-            <span className="text-sm">Manage users and roles</span>
+            <div className={`h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full ${isAdmin ? 'bg-green-500' : 'bg-gray-300'} mr-2`}></div>
+            <span className="text-xs sm:text-sm">Manage users and roles</span>
           </div>
           
           <div className="flex items-center">
-            <div className={`h-3 w-3 rounded-full ${isAdmin ? 'bg-green-500' : 'bg-gray-300'} mr-2`}></div>
-            <span className="text-sm">View system logs</span>
+            <div className={`h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full ${isAdmin ? 'bg-green-500' : 'bg-gray-300'} mr-2`}></div>
+            <span className="text-xs sm:text-sm">View system logs</span>
           </div>
           
           <div className="flex items-center">
-            <div className={`h-3 w-3 rounded-full ${isEditor ? 'bg-green-500' : 'bg-gray-300'} mr-2`}></div>
-            <span className="text-sm">Create and edit content</span>
+            <div className={`h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full ${isEditor ? 'bg-green-500' : 'bg-gray-300'} mr-2`}></div>
+            <span className="text-xs sm:text-sm">Create and edit content</span>
           </div>
           
           <div className="flex items-center">
-            <div className="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
-            <span className="text-sm">View content</span>
+            <div className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-green-500 mr-2"></div>
+            <span className="text-xs sm:text-sm">View content</span>
           </div>
         </div>
       </div>

@@ -80,16 +80,16 @@ export default function SystemLogs() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">System Logs</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">System Logs</h1>
       
-      <div className="mb-4 relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <Search size={20} className="text-gray-400" />
+      <div className="mb-3 sm:mb-4 relative">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-2 sm:pl-3 pointer-events-none">
+          <Search size={16} className="sm:size-5 text-gray-400" />
         </div>
         <input
           type="text"
           placeholder="Search logs..."
-          className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full"
+          className="pl-8 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md w-full"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -100,16 +100,17 @@ export default function SystemLogs() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Timestamp
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <span className="hidden sm:inline">Timestamp</span>
+                  <span className="sm:hidden">Time</span>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   User
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Action
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Details
                 </th>
               </tr>
@@ -117,25 +118,29 @@ export default function SystemLogs() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredLogs.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">
+                  <td colSpan={4} className="px-2 sm:px-6 py-3 sm:py-4 text-center text-xs sm:text-sm text-gray-500">
                     {logs.length === 0 ? 'No logs found' : 'No logs match your search'}
                   </td>
                 </tr>
               ) : (
                 filteredLogs.map((log) => (
                   <tr key={log._id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                       {formatDate(log.timestamp)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                    <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                      <div className="text-xs sm:text-sm font-medium text-gray-900">
                         {getUserName(log.user)}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{log.action}</div>
+                    <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                      <div className="text-xs sm:text-sm text-gray-900">{log.action}</div>
+                      {/* Show details on mobile */}
+                      <div className="sm:hidden text-xs text-gray-600 mt-1 max-w-[150px] truncate">
+                        {log.details}
+                      </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="hidden sm:table-cell px-6 py-4">
                       <div className="text-sm text-gray-900">{log.details}</div>
                     </td>
                   </tr>

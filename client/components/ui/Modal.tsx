@@ -58,11 +58,13 @@ export default function Modal({ isOpen, onClose, children, title }: ModalProps) 
       onClick={handleOverlayClick}
     >
       <div 
-        className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative animate-fade-in-up"
+        className="bg-white p-4 sm:p-6 rounded-lg shadow-xl w-[90%] sm:w-full max-w-md mx-4 relative animate-fade-in-up"
         onClick={e => e.stopPropagation()}
       >
-        {title && <h3 className="text-xl font-bold mb-4">{title}</h3>}
-        {children}
+        {title && <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">{title}</h3>}
+        <div className="text-sm sm:text-base">
+          {children}
+        </div>
       </div>
     </div>,
     document.body

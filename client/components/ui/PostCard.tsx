@@ -5,16 +5,12 @@ import Image from 'next/image';
 import { 
   Heart, 
   MessageCircle, 
-  Share2, 
   Edit, 
   Trash2, 
   Send, 
   MoreHorizontal,
   Clock,
-  Bookmark,
-  BookmarkCheck,
-  AlertCircle,
-  Copy
+  AlertCircle
 } from 'lucide-react';
 import { formatDate } from '@/utils/helpers';
 import { apiRequest } from '@/utils/api';
@@ -33,13 +29,11 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
   const [isLiked, setIsLiked] = useState<boolean>(
     post.likes ? post.likes.includes(user?.id || '') : false
   );
-  const [isSaved, setIsSaved] = useState<boolean>(false);
   const [likesCount, setLikesCount] = useState<number>(post.likes?.length || 0);
   const [commentContent, setCommentContent] = useState<string>('');
   const [showComments, setShowComments] = useState<boolean>(false);
   const [comments, setComments] = useState<PostComment[]>(post.comments || []);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [showCopiedToast, setShowCopiedToast] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   
   const commentInputRef = useRef<HTMLInputElement>(null);
@@ -118,17 +112,7 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
     return post.author?.role || '';
   };
 
-  const handleSavePost = () => {
-    setIsSaved(!isSaved);
-    // Here you would typically save this to your backend/localStorage
-  };
-
-  const handleSharePost = () => {
-    // Copy post link to clipboard
-    navigator.clipboard.writeText(`${window.location.origin}/posts/${post._id}`);
-    setShowCopiedToast(true);
-    setTimeout(() => setShowCopiedToast(false), 2000);
-  };
+  // Removed handleSavePost and handleSharePost functions
 
   const toggleComments = () => {
     setShowComments(!showComments);
@@ -194,28 +178,28 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm overflow-hidden border border-gray-100 dark:border-slate-700 hover:shadow-md transition-shadow duration-300">
       {/* Post Header */}
-      <div className="flex items-center p-4 sm:p-5 border-b border-gray-100 dark:border-slate-800">
-        <div className={`h-10 w-10 rounded-full ${getAuthorBgColor()} flex items-center justify-center text-white font-bold shadow-sm`}>
+      <div className="flex items-center p-3 sm:p-4 md:p-5 border-b border-gray-100 dark:border-slate-800">
+        <div className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full ${getAuthorBgColor()} flex items-center justify-center text-white font-bold shadow-sm`}>
           {getAuthorName().charAt(0).toUpperCase()}
         </div>
-        <div className="ml-3 flex-grow">
-          <div className="flex items-center">
-            <p className="font-medium text-gray-900 dark:text-white">{getAuthorName()}</p>
-            <div className="ml-2">{getRoleBadge()}</div>
+        <div className="ml-2 sm:ml-3 flex-grow">
+          <div className="flex flex-wrap items-center">
+            <p className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">{getAuthorName()}</p>
+            <div className="ml-1.5 sm:ml-2">{getRoleBadge()}</div>
           </div>
           <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            <Clock size={12} className="mr-1" />
-            <span>{formatDate(post.createdAt)}</span>
+            <Clock size={10} className="mr-1 sm:size-[12px]" />
+            <span className="text-[10px] sm:text-xs">{formatDate(post.createdAt)}</span>
           </div>
         </div>
         
         <div className="relative" ref={menuRef}>
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition"
+            className="p-1.5 sm:p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition"
             aria-label="Post options"
           >
-            <MoreHorizontal size={18} className="text-gray-500 dark:text-gray-400" />
+            <MoreHorizontal size={16} className="text-gray-500 dark:text-gray-400 sm:size-[18px]" />
           </button>
           
           {isMenuOpen && (
@@ -233,45 +217,26 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
               {isAuthor && showActions && onDeletePost && (
                 <button 
                   onClick={() => { onDeletePost(post._id); setIsMenuOpen(false); }}
-                  className="flex w-full items-center px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  className="flex w-full items-center px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-b-lg"
                 >
                   <Trash2 size={16} className="mr-2" />
                   Delete post
                 </button>
               )}
-              
-              <button 
-                onClick={() => { handleSavePost(); setIsMenuOpen(false); }}
-                className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700"
-              >
-                {isSaved ? 
-                  <BookmarkCheck size={16} className="mr-2 text-blue-500" /> : 
-                  <Bookmark size={16} className="mr-2 text-gray-500 dark:text-gray-400" />
-                }
-                {isSaved ? 'Saved' : 'Save post'}
-              </button>
-              
-              <button 
-                onClick={() => { handleSharePost(); setIsMenuOpen(false); }}
-                className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-b-lg"
-              >
-                <Copy size={16} className="mr-2 text-gray-500 dark:text-gray-400" />
-                Copy link
-              </button>
             </div>
           )}
         </div>
       </div>
       
       {/* Post Content */}
-      <div className="p-4 sm:p-5">
-        <h3 className="text-lg sm:text-xl font-bold mb-2 text-gray-900 dark:text-white">{post.title}</h3>
-        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{post.content}</p>
+      <div className="p-3 sm:p-4 md:p-5">
+        <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1.5 sm:mb-2 text-gray-900 dark:text-white">{post.title}</h3>
+        <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 whitespace-pre-line">{post.content}</p>
       </div>
       
       {/* Post Image (if exists) */}
       {post.image && (
-        <div className="relative w-full h-80 sm:h-96">
+        <div className="relative w-full h-60 sm:h-72 md:h-80 lg:h-96">
           <img 
             src={post.image} 
             alt={post.title}
@@ -281,13 +246,13 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
       )}
       
       {/* Post Stats */}
-      <div className="flex items-center px-4 sm:px-5 py-3 text-sm text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-slate-800">
-        <div className="mr-6 flex items-center">
-          <Heart size={16} className={`mr-1.5 ${isLiked ? 'fill-rose-500 text-rose-500' : ''}`} />
+      <div className="flex items-center px-3 sm:px-4 md:px-5 py-2 sm:py-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-slate-800">
+        <div className="mr-4 sm:mr-6 flex items-center">
+          <Heart size={14} className={`mr-1 sm:mr-1.5 sm:size-[16px] ${isLiked ? 'fill-rose-500 text-rose-500' : ''}`} />
           <span>{likesCount} {likesCount === 1 ? 'like' : 'likes'}</span>
         </div>
         <div className="flex items-center cursor-pointer" onClick={toggleComments}>
-          <MessageCircle size={16} className="mr-1.5" />
+          <MessageCircle size={14} className="mr-1 sm:mr-1.5 sm:size-[16px]" />
           <span>{comments.length} {comments.length === 1 ? 'comment' : 'comments'}</span>
         </div>
       </div>
@@ -296,35 +261,28 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
       <div className="flex border-t border-gray-100 dark:border-slate-800">
         <button 
           onClick={handleLike}
-          className={`flex-1 flex items-center justify-center py-3 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors ${
+          className={`flex-1 flex items-center justify-center py-2 sm:py-3 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors ${
             isLiked ? 'text-rose-500' : 'text-gray-700 dark:text-gray-300'
           }`}
         >
-          <Heart size={18} className={isLiked ? 'fill-rose-500' : ''} />
-          <span className="ml-2 font-medium text-sm">Like</span>
+          <Heart size={16} className={`sm:size-[18px] ${isLiked ? 'fill-rose-500' : ''}`} />
+          <span className="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm">Like</span>
         </button>
         <button 
           onClick={toggleComments}
-          className="flex-1 flex items-center justify-center py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors"
+          className="flex-1 flex items-center justify-center py-2 sm:py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors"
         >
-          <MessageCircle size={18} />
-          <span className="ml-2 font-medium text-sm">Comment</span>
-        </button>
-        <button 
-          onClick={handleSharePost}
-          className="flex-1 flex items-center justify-center py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors"
-        >
-          <Share2 size={18} />
-          <span className="ml-2 font-medium text-sm">Share</span>
+          <MessageCircle size={16} className="sm:size-[18px]" />
+          <span className="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm">Comment</span>
         </button>
       </div>
       
       {/* Comments Section */}
       {showComments && (
-        <div className="border-t border-gray-100 dark:border-slate-800 p-4 sm:p-5 animate-fade-in">
+        <div className="border-t border-gray-100 dark:border-slate-800 p-3 sm:p-4 md:p-5 animate-fade-in">
           {/* Comment Input */}
-          <div className="flex items-start mb-4">
-            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-3 mt-1 flex-shrink-0">
+          <div className="flex items-start mb-3 sm:mb-4">
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-2 sm:mr-3 mt-1 flex-shrink-0">
               {user?.firstName?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div className="flex-grow relative">
@@ -335,32 +293,32 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
                 onKeyDown={handleKeyPress}
                 ref={commentInputRef}
                 placeholder="Write a comment..."
-                className="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-full py-2 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-full py-1.5 sm:py-2 px-3 sm:px-4 pr-10 sm:pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
               />
               <button 
                 onClick={handleAddComment}
                 disabled={!commentContent.trim() || isSubmitting}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="absolute right-1.5 sm:right-2 top-1/2 transform -translate-y-1/2 text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                <Send size={16} className={isSubmitting ? 'animate-pulse' : ''} />
+                <Send size={14} className={`sm:size-[16px] ${isSubmitting ? 'animate-pulse' : ''}`} />
               </button>
             </div>
           </div>
           
           {/* Comments List */}
-          <div className="space-y-4 max-h-96 overflow-y-auto px-2">
+          <div className="space-y-3 sm:space-y-4 max-h-80 sm:max-h-96 overflow-y-auto px-1 sm:px-2">
             {comments.length > 0 ? (
               comments.map((comment, index) => (
                 <div key={index} className="flex animate-fade-in" style={{animationDelay: `${index * 0.05}s`}}>
-                  <div className={`h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-3 mt-1 flex-shrink-0`}>
+                  <div className={`h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-2 sm:mr-3 mt-1 flex-shrink-0 text-xs sm:text-sm`}>
                     {getCommentAuthorName(comment).charAt(0).toUpperCase()}
                   </div>
-                  <div className="bg-gray-100 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm flex-grow">
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="flex items-center">
-                        <p className="font-medium text-gray-900 dark:text-white">{getCommentAuthorName(comment)}</p>
+                  <div className="bg-gray-100 dark:bg-slate-800 rounded-2xl px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm flex-grow">
+                    <div className="flex flex-wrap justify-between items-center mb-1">
+                      <div className="flex flex-wrap items-center gap-1">
+                        <p className="font-medium text-gray-900 dark:text-white text-xs sm:text-sm">{getCommentAuthorName(comment)}</p>
                         {typeof comment.author !== 'string' && comment.author?.role && (
-                          <span className={`ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium capitalize
+                          <span className={`inline-flex items-center px-1 sm:px-1.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium capitalize
                             ${comment.author.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' : 
                               comment.author.role === 'editor' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
                               'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'}`}
@@ -369,30 +327,24 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(comment.createdAt)}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{formatDate(comment.createdAt)}</p>
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300">{comment.content}</p>
+                    <p className="text-gray-700 dark:text-gray-300 text-xs sm:text-sm">{comment.content}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-center py-6">
-                <MessageCircle size={28} className="mx-auto text-gray-300 dark:text-gray-600 mb-2" />
-                <p className="text-gray-500 dark:text-gray-400 font-medium">No comments yet</p>
-                <p className="text-sm text-gray-400 dark:text-gray-500">Be the first to comment on this post</p>
+              <div className="text-center py-4 sm:py-6">
+                <MessageCircle size={24} className="mx-auto text-gray-300 dark:text-gray-600 mb-2 sm:size-[28px]" />
+                <p className="text-gray-500 dark:text-gray-400 font-medium text-sm sm:text-base">No comments yet</p>
+                <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500">Be the first to comment on this post</p>
               </div>
             )}
           </div>
         </div>
       )}
       
-      {/* Copy notification toast */}
-      {showCopiedToast && (
-        <div className="fixed bottom-4 right-4 bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2 z-50 animate-fade-in">
-          <Copy size={16} />
-          <span>Link copied to clipboard</span>
-        </div>
-      )}
+      {/* Removed copy notification toast */}
     </div>
   );
 }

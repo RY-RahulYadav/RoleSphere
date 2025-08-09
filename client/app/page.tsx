@@ -26,12 +26,12 @@ export default function Home() {
     <div className="">
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-sm bg-white/80 border-b border-gray-100 w-[90vw] mx-auto" style={{"width":"90vw"}}>
-        <div className="px-4 py-4 flex justify-between items-center">
+        <div className="px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <div className="h-10 w-10 rounded-lg bg-brand-gradient flex items-center justify-center text-white font-bold text-xl shadow-lg animate-float">
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-brand-gradient flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg animate-float">
               RS
             </div>
-            <h1 className="ml-2 text-2xl font-bold text-brand-gradient">
+            <h1 className="ml-1.5 sm:ml-2 text-xl sm:text-2xl font-bold text-brand-gradient">
               RoleSphere
             </h1>
           </div>
@@ -49,30 +49,30 @@ export default function Home() {
           
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-gray-700"
+            className="md:hidden text-gray-700 p-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={20} className="sm:size-[24px]" /> : <Menu size={20} className="sm:size-[24px]" />}
           </button>
         </div>
         
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-white border-b border-gray-100 animate-fade-in">
-            <div className=" mx-auto px-4 py-4 flex flex-col space-y-3">
+            <div className="mx-auto px-3 sm:px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
               <Link 
                 href="/login" 
-                className="text-gray-700 hover:text-brand-primary font-medium py-2"
+                className="text-gray-700 hover:text-brand-primary font-medium py-1.5 sm:py-2 text-sm sm:text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Login
               </Link>
               <Link 
                 href="/login" 
-                className="bg-brand-gradient text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center shadow-md"
+                className="bg-brand-gradient text-white font-medium py-1.5 sm:py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg transition-all duration-300 flex items-center justify-center shadow-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Get Started <ArrowRight size={16} className="ml-1" />
+                Get Started <ArrowRight size={14} className="ml-1 sm:size-[16px]" />
               </Link>
             </div>
           </div>
@@ -89,26 +89,26 @@ export default function Home() {
           <div className="absolute bottom-0 right-0 w-40 h-40 rounded-full bg-brand-primary opacity-10"></div>
         </div>
 
-        <div className="mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+        <div className="mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 relative z-10">
           <div className="lg:w-1/2">
             <div className="animate-fade-in">
-              <span className="inline-block bg-primary-light dark:bg-primary-light/30 text-brand-primary font-semibold px-4 py-1.5 rounded-full mb-6">
+              <span className="inline-block bg-primary-light dark:bg-primary-light/30 text-brand-primary font-semibold px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm mb-4 sm:mb-6">
                 Role-Based Access Control System
               </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
                 Personalized <span className="text-brand-gradient">Dashboards</span> for Every Role
               </h1>
-              <p className="mt-6 text-xl text-gray-600 dark:text-gray-300">
+              <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">
                 From admins to viewers, everyone gets exactly what they need — and nothing they shouldn't.
               </p>
-              <p className="mt-4 text-lg text-gray-500 dark:text-gray-400">
+              <p className="mt-2 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-500 dark:text-gray-400">
                 Access the right tools, at the right time.
               </p>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link href="/login" className="bg-brand-gradient hover:opacity-90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 flex items-center shadow-lg hover:shadow-xl">
+              <div className="mt-6 sm:mt-10 flex flex-wrap gap-3 sm:gap-4">
+                <Link href="/login" className="bg-brand-gradient hover:opacity-90 text-white font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-300 flex items-center text-sm sm:text-base shadow-lg hover:shadow-xl">
                   🚀 Try Demo
                 </Link>
-                <a href="https://github.com/RY-RahulYadav/RoleSphere" target="_blank" rel="noopener noreferrer" className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white font-medium py-3 px-6 rounded-lg border border-gray-300 dark:border-gray-600 transition-colors duration-300 flex items-center shadow-md hover:shadow-lg">
+                <a href="https://github.com/RY-RahulYadav/RoleSphere" target="_blank" rel="noopener noreferrer" className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white font-medium py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base rounded-lg border border-gray-300 dark:border-gray-600 transition-colors duration-300 flex items-center shadow-md hover:shadow-lg">
                   📂 View on GitHub
                 </a>
               </div>
@@ -220,27 +220,27 @@ export default function Home() {
       </section>
 </div> 
       {/* Features Section */}
-      <section id="features" className="py-24 bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-800 w-[90vw] mx-auto" style={{"width":"90vw"}}>
-        <div className=" mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16 animate-fade-in">
-            <span className="inline-block px-3 py-1 text-sm font-semibold bg-primary-light dark:bg-primary-light/30 text-brand-primary rounded-full mb-4">
+      <section id="features" className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-800 w-[90vw] mx-auto" style={{"width":"90vw"}}>
+        <div className="mx-auto px-3 sm:px-4">
+          <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12 md:mb-16 animate-fade-in">
+            <span className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-semibold bg-primary-light dark:bg-primary-light/30 text-brand-primary rounded-full mb-3 sm:mb-4">
               POWERFUL FEATURES
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
               Everything You Need for <span className="text-brand-gradient">Role-Based</span> Management
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
               Our platform provides comprehensive tools to manage access, content, and user experiences tailored to each role in your organization.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 card-hover">
-              <div className="h-14 w-14 rounded-xl bg-brand-gradient flex items-center justify-center mb-6 shadow-md">
-                <ShieldCheck size={28} className="text-white" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            <div className="bg-white dark:bg-gray-800 p-5 sm:p-6 md:p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 card-hover">
+              <div className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-xl bg-brand-gradient flex items-center justify-center mb-4 sm:mb-6 shadow-md">
+                <ShieldCheck size={20} className="text-white sm:size-[24px] md:size-[28px]" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Role-Based Access Control</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-4">Role-Based Access Control</h3>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                 Grant the right permissions to the right people. Admins manage users, editors control content, and viewers browse — all with tailored access.
               </p>
             </div>
@@ -309,15 +309,15 @@ export default function Home() {
       {/* Footer */}
       
     </div></div>
-    <footer className="bg-gray-900 text-gray-400 w-full ">
-        <div className="w-[90vw] mx-auto px-4" style={{"width":"90vw"}}>
+    <footer className="bg-gray-900 text-gray-400 w-full">
+        <div className="w-[90vw] mx-auto px-3 sm:px-4" style={{"width":"90vw"}}>
          
-          <div className="border-t border-gray-800 py-10 flex flex-col md:flex-row justify-between items-center">
-            <p>&copy; {new Date().getFullYear()} RoleSphere. All rights reserved.</p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Terms of Service</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Cookie Policy</a>
+          <div className="border-t border-gray-800 py-6 sm:py-8 md:py-10 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-xs sm:text-sm">&copy; {new Date().getFullYear()} RoleSphere. All rights reserved.</p>
+            <div className="flex space-x-3 sm:space-x-6 mt-3 md:mt-0">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors text-xs sm:text-sm">Privacy Policy</a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors text-xs sm:text-sm">Terms of Service</a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors text-xs sm:text-sm">Cookie Policy</a>
             </div>
           </div>
         </div>
