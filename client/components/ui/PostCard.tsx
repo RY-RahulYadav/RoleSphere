@@ -99,7 +99,16 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
     if (typeof comment.author === 'string') {
       return 'Unknown User';
     }
-    return `${comment.author?.firstName} ${comment.author?.middleName ? comment.author.middleName + ' ' : ''}${comment.author?.lastName}` || 'Unknown User';
+    
+    const firstName = comment.author?.firstName || '';
+    const middleName = comment.author?.middleName ? comment.author.middleName + ' ' : '';
+    const lastName = comment.author?.lastName || '';
+    
+    if (!firstName && !lastName) {
+      return 'Unknown User';
+    }
+    
+    return `${firstName} ${middleName}${lastName}`;
   };
 
   const getAuthorRole = (): string => {
@@ -348,7 +357,18 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
                   </div>
                   <div className="bg-gray-100 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm flex-grow">
                     <div className="flex justify-between items-center mb-1">
-                      <p className="font-medium text-gray-900 dark:text-white">{getCommentAuthorName(comment)}</p>
+                      <div className="flex items-center">
+                        <p className="font-medium text-gray-900 dark:text-white">{getCommentAuthorName(comment)}</p>
+                        {typeof comment.author !== 'string' && comment.author?.role && (
+                          <span className={`ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium capitalize
+                            ${comment.author.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' : 
+                              comment.author.role === 'editor' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
+                              'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'}`}
+                          >
+                            {comment.author.role}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(comment.createdAt)}</p>
                     </div>
                     <p className="text-gray-700 dark:text-gray-300">{comment.content}</p>

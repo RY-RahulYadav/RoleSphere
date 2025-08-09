@@ -42,20 +42,25 @@ export default function UserManagement() {
     if (!selectedUser || !token) return;
     
     try {
+      // Use _id instead of id for MongoDB
+      const userId = selectedUser._id || selectedUser.id;
+      
       await apiRequest<User>(
-        `/users/${selectedUser.id}/role`,
+        `/users/${userId}/role`,
         'PUT',
         { role: selectedRole },
         token
       );
       
       setUsers(users.map(user => 
-        user.id === selectedUser.id ? { ...user, role: selectedRole } : user
+        (user._id === userId || user.id === userId) ? { ...user, role: selectedRole } : user
       ));
       
       setIsModalOpen(false);
     } catch (err: any) {
-      setError(err.message || 'Failed to update user role');
+      console.error('Role change error:', err);
+      setError(`Failed to update user role: ${err.message || 'Unknown error'}`);
+      // Keep modal open on error
     }
   };
 
@@ -63,17 +68,22 @@ export default function UserManagement() {
     if (!selectedUser || !token) return;
     
     try {
+      // Use _id instead of id for MongoDB
+      const userId = selectedUser._id || selectedUser.id;
+      
       await apiRequest<{ message: string }>(
-        `/users/${selectedUser.id}`,
+        `/users/${userId}`,
         'DELETE',
         undefined,
         token
       );
       
-      setUsers(users.filter(user => user.id !== selectedUser.id));
+      setUsers(users.filter(user => user._id !== userId && user.id !== userId));
       setIsConfirmDeleteOpen(false);
     } catch (err: any) {
-      setError(err.message || 'Failed to delete user');
+      console.error('Delete user error:', err);
+      setError(`Failed to delete user: ${err.message || 'Unknown error'}`);
+      // Keep modal open on error
     }
   };
 
@@ -92,20 +102,27 @@ export default function UserManagement() {
     return <div className="text-center py-10">Loading users...</div>;
   }
 
-  if (error) {
-    return (
-      <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
-        <div className="flex items-center">
-          <AlertCircle className="mr-2" size={20} />
-          <p>{error}</p>
-        </div>
+  // Show error as an alert but don't replace the entire component
+  const errorDisplay = error ? (
+    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
+      <div className="flex items-center">
+        <AlertCircle className="mr-2" size={20} />
+        <p>{error}</p>
       </div>
-    );
-  }
+      <button 
+        onClick={() => setError('')}
+        className="mt-2 text-sm text-red-700 hover:text-red-900 underline"
+      >
+        Dismiss
+      </button>
+    </div>
+  ) : null;
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">User Management</h1>
+      
+      {errorDisplay}
       
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">

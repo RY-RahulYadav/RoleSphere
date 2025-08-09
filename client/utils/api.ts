@@ -42,12 +42,31 @@ export async function apiRequest<T>(
     body: data ? JSON.stringify(data) : undefined,
   };
 
-  const response = await fetch(`${API_URL}${endpoint}`, config);
-  const result = await response.json();
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, config);
+    
+    // Try to parse JSON response, but handle cases where response might not be JSON
+    let result;
+    const contentType = response.headers.get('content-type');
+    
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json();
+    } else {
+      // Handle non-JSON responses
+      const text = await response.text();
+      result = { message: text || `Error: ${response.statusText}` };
+    }
 
-  if (!response.ok) {
-    throw result as ApiError;
+    if (!response.ok) {
+      throw result as ApiError;
+    }
+  
+    return result as T;
+  } catch (error) {
+    // Handle JSON parsing errors or network errors
+    if (error instanceof SyntaxError) {
+      throw { message: 'Invalid response from server' };
+    }
+    throw error;
   }
-
-  return result as T;
 }

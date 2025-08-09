@@ -37,7 +37,8 @@ exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .populate('author', 'firstName middleName lastName email role');
+      .populate('author', 'firstName middleName lastName email role')
+      .populate('comments.author', 'firstName middleName lastName email role');
     
     res.json(posts);
   } catch (error) {
@@ -52,7 +53,8 @@ exports.getEditorPosts = async (req, res) => {
     // Fetch posts created by the logged-in editor or admin
     const posts = await Post.find({ author: req.user._id })
       .sort({ createdAt: -1 })
-      .populate('author', 'firstName middleName lastName email role');
+      .populate('author', 'firstName middleName lastName email role')
+      .populate('comments.author', 'firstName middleName lastName email role');
     
     res.json(posts);
   } catch (error) {
@@ -65,7 +67,8 @@ exports.getEditorPosts = async (req, res) => {
 exports.getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate('author', 'firstName middleName lastName email role');
+      .populate('author', 'firstName middleName lastName email role')
+      .populate('comments.author', 'firstName middleName lastName email role');
     
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
@@ -104,7 +107,9 @@ exports.updatePost = async (req, res) => {
         updatedAt: Date.now()
       },
       { new: true }
-    ).populate('author', 'firstName middleName lastName email role');
+    )
+    .populate('author', 'firstName middleName lastName email role')
+    .populate('comments.author', 'firstName middleName lastName email role');
     
     // Log this action
     await Log.create({

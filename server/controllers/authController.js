@@ -115,7 +115,7 @@ exports.getCurrentUser = async (req, res) => {
 // Update user profile
 exports.updateProfile = async (req, res) => {
   try {
-    const { firstName, middleName, lastName, email, currentPassword, newPassword } = req.body;
+    const { firstName, middleName, lastName, currentPassword, newPassword } = req.body;
     
     // Get the current user
     const user = await User.findById(req.user._id);
@@ -128,7 +128,7 @@ exports.updateProfile = async (req, res) => {
     if (firstName) user.firstName = firstName;
     if (middleName !== undefined) user.middleName = middleName;
     if (lastName) user.lastName = lastName;
-    if (email) user.email = email;
+    // Email is intentionally omitted from updates to prevent changes
     
     // Handle password change if provided
     if (currentPassword && newPassword) {

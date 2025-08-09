@@ -61,8 +61,11 @@ exports.updateUserRole = async (req, res) => {
       user
     });
   } catch (error) {
-    console.error('Update user role error:', error.message);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Update user role error:', error);
+    if (error.kind === 'ObjectId') {
+      return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+    res.status(500).json({ message: `Server error: ${error.message}` });
   }
 };
 
@@ -80,6 +83,12 @@ exports.deleteUser = async (req, res) => {
       return res.status(400).json({ message: 'Cannot delete yourself' });
     }
     
+    // Import Post model
+    const Post = require('../models/Post');
+    
+    // Delete all posts by this user
+    const deletedPosts = await Post.deleteMany({ author: user._id });
+    
     // Delete user
     await User.findByIdAndDelete(req.params.id);
     
@@ -87,12 +96,18 @@ exports.deleteUser = async (req, res) => {
     await Log.create({
       user: req.user._id,
       action: 'Delete User',
-      details: `User ${req.user.firstName} ${req.user.lastName} deleted user ${user.firstName} ${user.lastName}`
+      details: `User ${req.user.firstName} ${req.user.lastName} deleted user ${user.firstName} ${user.lastName} and ${deletedPosts.deletedCount} associated posts`
     });
     
-    res.json({ message: 'User deleted successfully' });
+    res.json({ 
+      message: 'User deleted successfully', 
+      postsDeleted: deletedPosts.deletedCount 
+    });
   } catch (error) {
-    console.error('Delete user error:', error.message);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Delete user error:', error);
+    if (error.kind === 'ObjectId') {
+      return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+    res.status(500).json({ message: `Server error: ${error.message}` });
   }
 };

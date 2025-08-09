@@ -32,11 +32,12 @@ export default function Profile() {
     setSuccessMessage('');
     
     try {
+      // Email is not included in updateData as it cannot be changed
       const updateData: Partial<User> = {
         firstName: formData.firstName,
         middleName: formData.middleName,
         lastName: formData.lastName,
-        email: formData.email,
+        // email is intentionally omitted to prevent changes
       };
       
       // Get token from localStorage or auth context
@@ -136,18 +137,24 @@ export default function Profile() {
             </div>
             
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
+              <div className="flex items-center justify-between">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <span className="text-xs text-gray-500 italic">Cannot be changed</span>
+              </div>
               <input
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                required
+                readOnly
+                className="mt-1 block w-full border border-gray-200 bg-gray-50 text-gray-500 rounded-md shadow-sm p-2 cursor-not-allowed"
+                title="Email address cannot be changed"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Contact support if you need to change your email address
+              </p>
             </div>
             
             <div className="flex justify-end">
