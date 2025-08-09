@@ -36,6 +36,14 @@ export default function Settings() {
       return;
     }
     
+    // Validate password meets requirements
+    const passwordRegex = /^[A-Z].*(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/;
+    if (!passwordRegex.test(formData.newPassword)) {
+      setError('Password must be at least 8 characters with first letter capital, include at least one number and one special character');
+      setIsSubmitting(false);
+      return;
+    }
+    
     try {
       const updateData = {
         currentPassword: formData.currentPassword,
@@ -126,7 +134,11 @@ export default function Settings() {
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                   required
+                  minLength={8}
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  Password must be at least 8 characters with first letter capital, include at least one number and one special character
+                </p>
               </div>
               
               <div>

@@ -120,9 +120,9 @@ To populate the database with initial users and roles:
 
    | Role    | Email               | Password    |
    |---------|---------------------|-------------|
-   | Admin   | admin@example.com   | password123 |
-   | Editor  | editor@example.com  | password123 |
-   | Viewer  | viewer@example.com  | password123 |
+   | Admin   | admin@example.com   | admin123# |
+   | Editor  | editor@example.com  | editor123# |
+   | Viewer  | viewer@example.com  | Viewer123# |
 
    > **Important**: Change these default passwords in a production environment.
 

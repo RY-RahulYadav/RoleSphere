@@ -11,16 +11,16 @@ const users = [
     middleName: '',
     lastName: 'User',
     email: 'admin@example.com',
-    password: 'password123',
+    password: 'Admin123!',
     role: 'admin'
   },
-  
+
   {
     firstName: 'Editor',
     middleName: '',
     lastName: 'User',
     email: 'editor@example.com',
-    password: 'password123',
+    password: 'Editor123@',
     role: 'editor'
   },
   {
@@ -28,7 +28,7 @@ const users = [
     middleName: '',
     lastName: 'User',
     email: 'viewer@example.com',
-    password: 'password123',
+    password: 'Viewer123#',
     role: 'viewer'
   }
 ];

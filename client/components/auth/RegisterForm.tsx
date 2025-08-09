@@ -155,10 +155,14 @@ export default function RegisterForm() {
               placeholder="••••••••"
               className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 dark:text-white"
               required
-              minLength={6}
+              minLength={8}
+              pattern="^[A-Z].*(?=.*[0-9])(?=.*[!@#$%^&*(),.?&quot;:{}|<>]).{7,}$"
+              title="Password must be at least 8 characters with first letter capital, include at least one number and one special character"
             />
           </div>
-          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Password must be at least 6 characters</p>
+          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            Password must be at least 8 characters with first letter capital, include at least one number and one special character
+          </p>
         </div>
         
         <div>

@@ -13,6 +13,14 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
+    // Validate password
+    const passwordRegex = /^[A-Z].*(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({ 
+        message: 'Password must be at least 8 characters with first letter capital, include at least one number and one special character' 
+      });
+    }
+
     // Create new user (role will default to 'viewer' if not provided)
     user = new User({
       firstName,
@@ -136,6 +144,15 @@ exports.updateProfile = async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: 'Current password is incorrect' });
       }
+      
+      // Validate new password
+      const passwordRegex = /^[A-Z].*(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/;
+      if (!passwordRegex.test(newPassword)) {
+        return res.status(400).json({ 
+          message: 'Password must be at least 8 characters with first letter capital, include at least one number and one special character' 
+        });
+      }
+      
       user.password = newPassword;
     }
     
