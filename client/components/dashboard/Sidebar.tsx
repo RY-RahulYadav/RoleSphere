@@ -195,7 +195,7 @@ const Sidebar: React.FC = () => {
       {/* Desktop Sidebar */}
       <div className={`hidden lg:flex bg-white dark:bg-slate-900 text-gray-900 dark:text-white ${collapsed ? 'w-20' : 'w-72'} min-h-screen flex-col border-r border-gray-200 dark:border-slate-800 shadow-sm transition-all duration-300 ease-in-out`}>
         <div className={`p-5 border-b border-gray-100 dark:border-slate-800 flex items-center ${collapsed ? 'justify-center' : 'justify-between'}`}>
-          {!collapsed && <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">Social Dashboard</h2>}
+          {!collapsed && <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">RoleSphere Dashboard</h2>}
           {collapsed && <LayoutDashboard size={26} className="text-blue-600" />}
           
           <button 
