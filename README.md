@@ -86,7 +86,7 @@ A full-stack application with Next.js frontend and Node.js/Express backend demon
    npm install
 
    # Install client dependencies
-   cd ../client
+   cd client
    npm install
    ```
 
@@ -98,7 +98,9 @@ A full-stack application with Next.js frontend and Node.js/Express backend demon
    JWT_SECRET=your_jwt_secret_key_change_this_in_production
    ```
    
-   > Note: You can use a local MongoDB instance or MongoDB Atlas. If using Atlas, your connection string will look like: `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/rolesphere`
+   > **MongoDB Connection Options**:
+   > - For local MongoDB: `mongodb://localhost:27017/rolesphere`
+   > - For MongoDB Atlas: `mongodb+srv://<user>:<password>@cluster0.p8nvvwg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
 ### Database Seeding
 
@@ -126,8 +128,6 @@ To populate the database with initial users and roles:
 
 ### Running the Application
 
-#### Development Mode
-
 1. Start the server:
    ```bash
    cd server
@@ -142,25 +142,6 @@ To populate the database with initial users and roles:
 
 3. Access the application at `http://localhost:3000`
 
-#### Production Mode
-
-1. Build the client:
-   ```bash
-   cd client
-   npm run build
-   ```
-
-2. Start the server:
-   ```bash
-   cd ../server
-   npm start
-   ```
-
-3. Start the client:
-   ```bash
-   cd ../client
-   npm start
-   ```
 
 ## User Roles and Permissions
 
