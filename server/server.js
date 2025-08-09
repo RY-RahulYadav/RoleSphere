@@ -11,7 +11,7 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: '1mb' })); // Restrict payload to 1MB maximum
 app.use(cors());
 
 // API Routes

@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { apiRequest } from '@/utils/api';
 import { User } from '@/types';
 import { Edit, Trash2, AlertCircle } from 'lucide-react';
+import Modal from '@/components/ui/Modal';
 
 export default function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
@@ -171,12 +172,15 @@ export default function UserManagement() {
       </div>
 
       {/* Edit Role Modal */}
-      {isModalOpen && selectedUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-bold mb-4">Edit User Role</h3>
+      <Modal
+        isOpen={isModalOpen && selectedUser !== null}
+        onClose={() => setIsModalOpen(false)}
+        title="Edit User Role"
+      >
+        {selectedUser && (
+          <>
             <p className="mb-4">
-              Change role for <span className="font-bold">{`${selectedUser.firstName} ${selectedUser.middleName ? selectedUser.middleName + ' ' : ''}${selectedUser.lastName}`}</span>
+              Change role for <span className="font-medium text-blue-600">{selectedUser.firstName} {selectedUser.lastName}</span>
             </p>
             
             <div className="mb-4">
@@ -206,17 +210,20 @@ export default function UserManagement() {
                 Save Changes
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </Modal>
 
       {/* Confirm Delete Modal */}
-      {isConfirmDeleteOpen && selectedUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
+      <Modal
+        isOpen={isConfirmDeleteOpen && selectedUser !== null}
+        onClose={() => setIsConfirmDeleteOpen(false)}
+        title="Confirm Delete"
+      >
+        {selectedUser && (
+          <>
             <p className="mb-4">
-              Are you sure you want to delete <span className="font-bold">{`${selectedUser.firstName} ${selectedUser.middleName ? selectedUser.middleName + ' ' : ''}${selectedUser.lastName}`}</span>?
+              Are you sure you want to delete <span className="font-medium text-red-600">{selectedUser.firstName} {selectedUser.lastName}</span>?
               This action cannot be undone.
             </p>
             
@@ -234,9 +241,9 @@ export default function UserManagement() {
                 Delete
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </Modal>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { apiRequest } from '@/utils/api';
+import { apiRequest, handleApiError } from '@/utils/api';
 import { Post } from '@/types';
 import { AlertCircle, Image, Loader2, X } from 'lucide-react';
 
@@ -23,20 +23,37 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
   const { token } = useAuth();
   const router = useRouter();
 
+  const [fileSize, setFileSize] = useState<number | null>(null);
+  
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return bytes + ' bytes';
+    else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+  };
+
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB maximum file size
+  
   const handleImageInput = (e: ChangeEvent<HTMLInputElement>) => {
     setError('');
+    setFileSize(null);
     const file = e.target.files?.[0];
     
     if (file) {
-      // Check file size (limit to 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Image size must be less than 5MB');
+      setFileSize(file.size);
+      
+      // Check file size (limit to MAX_FILE_SIZE)
+      if (file.size > MAX_FILE_SIZE) {
+        setError(`Only images below 1MB are allowed. Your image (${formatFileSize(file.size)}) is too large.`);
+        // Reset the file input
+        e.target.value = '';
         return;
       }
       
       // Check file type
       if (!file.type.match('image.*')) {
         setError('Only image files are allowed');
+        // Reset the file input
+        e.target.value = '';
         return;
       }
       
@@ -53,6 +70,7 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
   const removeImage = () => {
     setImage('');
     setImagePreview(null);
+    setFileSize(null);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -61,6 +79,12 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
     
     if (!title.trim() || !content.trim()) {
       setError('Title and content are required');
+      return;
+    }
+    
+    // Double check image size before submission
+    if (fileSize && fileSize > MAX_FILE_SIZE) {
+      setError(`Only images below 1MB are allowed. Your image (${formatFileSize(fileSize)}) is too large.`);
       return;
     }
     
@@ -79,7 +103,7 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
       router.push('/dashboard/posts');
       router.refresh();
     } catch (err: any) {
-      setError(err.message || 'Failed to save post');
+      setError(handleApiError(err));
     } finally {
       setIsLoading(false);
     }
@@ -128,9 +152,14 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
         </div>
         
         <div className="mb-6">
-          <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
-            Image (optional)
-          </label>
+          <div className="flex justify-between items-center mb-1">
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+              Image (optional)
+            </label>
+            <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium">
+              Max size: 1MB
+            </span>
+          </div>
           
           {imagePreview ? (
             <div className="relative mb-2">
@@ -146,6 +175,11 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
               >
                 <X size={16} />
               </button>
+              {fileSize && (
+                <div className="absolute bottom-2 right-2 bg-gray-800 bg-opacity-70 text-white px-2 py-1 text-xs rounded">
+                  {formatFileSize(fileSize)}
+                </div>
+              )}
             </div>
           ) : (
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 transition mb-2">
@@ -159,7 +193,14 @@ export default function PostForm({ initialData, isEditing = false }: PostFormPro
               <label htmlFor="image" className="cursor-pointer flex flex-col items-center">
                 <Image size={32} className="text-gray-400 mb-2" />
                 <span className="text-gray-600">Click to upload an image</span>
-                <span className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</span>
+                <div className="flex flex-col items-center">
+                  <span className="text-xs text-gray-500 mt-1">PNG, JPG, GIF - <span className="font-bold text-blue-600">Maximum 1MB</span></span>
+                  {fileSize && (
+                    <span className={`text-xs mt-1 font-medium ${fileSize > MAX_FILE_SIZE ? 'text-red-500' : 'text-green-600'}`}>
+                      Current selection: {formatFileSize(fileSize)} {fileSize > MAX_FILE_SIZE ? '(Too large)' : '(OK)'}
+                    </span>
+                  )}
+                </div>
               </label>
             </div>
           )}
