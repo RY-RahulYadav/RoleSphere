@@ -19,28 +19,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load auth state from localStorage on initial render
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+    // Check if code is running in browser environment before accessing localStorage
+    if (typeof window !== 'undefined') {
+      // Load auth state from localStorage on initial render
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+      
+      if (storedToken && storedUser) {
+        setToken(storedToken);
+        setUser(JSON.parse(storedUser));
+      }
     }
     
     setIsLoading(false);
   }, []);
 
   const login = (token: string, user: User) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+    }
     setToken(token);
     setUser(user);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
     setToken(null);
     setUser(null);
   };

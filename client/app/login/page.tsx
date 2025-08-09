@@ -1,89 +1,49 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
-import { Globe, Moon, Sun } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
   const [isLoginView, setIsLoginView] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    // Check system preference for dark mode
-    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDarkMode(isDarkMode);
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    // Apply dark mode class to document
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex flex-col">
-      {/* Header */}
-      <header className="w-full p-4 flex justify-between items-center">
-        <div className="flex items-center">
-          <Globe className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-          <span className="ml-2 font-bold text-gray-900 dark:text-white">Social Dashboard</span>
-        </div>
-        
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="p-2 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-        >
-          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
-      </header>
-      
-      <div className="flex-1 flex flex-col lg:flex-row">
-        {/* Left Side - Illustration */}
-        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-500 to-purple-600 text-white flex-col justify-center items-center p-12">
-          <div className="max-w-md">
-            <h1 className="text-4xl font-bold mb-6">Welcome to Social Dashboard</h1>
-            <p className="text-lg mb-8 text-blue-100">
-              A powerful platform for managing your social content, users, and analytics with role-based permissions.
-            </p>
-            
-            <div className="grid grid-cols-2 gap-6">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                <h3 className="text-xl font-semibold mb-2">Admin</h3>
-                <p className="text-sm text-blue-100">Full access to manage users, content, and system logs</p>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex">
+      {/* Login/Register container */}
+      <div className="flex-1 flex justify-center items-center p-6">
+        <div className="w-full max-w-md animate-fade-in">
+          {/* Logo */}
+          <div className="flex justify-center items-center mb-10">
+            <Link href="/" className="flex items-center">
+              <div className="h-10 w-10 rounded-lg bg-brand-gradient flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                RS
               </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                <h3 className="text-xl font-semibold mb-2">Editor</h3>
-                <p className="text-sm text-blue-100">Create and manage content, engage with users</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                <h3 className="text-xl font-semibold mb-2">Viewer</h3>
-                <p className="text-sm text-blue-100">Read-only access to browse content and interact</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-                <h3 className="text-xl font-semibold mb-2">Analytics</h3>
-                <p className="text-sm text-blue-100">Track engagement and monitor performance</p>
-              </div>
-            </div>
+              <h1 className="ml-2 text-2xl font-bold text-brand-gradient">
+                RoleSphere
+              </h1>
+            </Link>
           </div>
-        </div>
-        
-        {/* Right Side - Login Form */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 lg:p-12">
-          <div className="w-full max-w-md">
+          
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-8">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                {isLoginView ? 'Welcome back' : 'Create your account'}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                {isLoginView 
+                  ? 'Enter your credentials to access your dashboard' 
+                  : 'Fill in the form below to get started'}
+              </p>
+            </div>
+            
             {isLoginView ? <LoginForm /> : <RegisterForm />}
             
             <div className="mt-6 text-center">
               <button
                 onClick={() => setIsLoginView(!isLoginView)}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                className="text-sm text-brand-primary dark:text-brand-secondary hover:text-brand-secondary dark:hover:text-brand-primary transition-colors"
               >
                 {isLoginView 
                   ? "Don't have an account? Register" 
@@ -91,13 +51,56 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
+          
+          <div className="mt-8 text-center">
+            <Link 
+              href="/"
+              className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+            >
+              <ArrowLeft size={16} className="mr-1" />
+              Back to Home
+            </Link>
+          </div>
         </div>
       </div>
       
-      {/* Footer */}
-      <footer className="w-full p-4 text-center text-sm text-gray-500 dark:text-gray-400">
-        &copy; 2025 Social Dashboard. All rights reserved.
-      </footer>
+      {/* Right side decorative area */}
+      <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
+        <div className="absolute inset-0 bg-brand-gradient-animated"></div>
+        <div className="absolute inset-0 bg-[url('/globe.svg')] bg-no-repeat bg-center opacity-10"></div>
+        
+        <div className="relative h-full flex items-center justify-center p-12 z-10">
+          <div className="max-w-lg">
+            <div className="text-center md:text-left text-white mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Welcome to RoleSphere</h2>
+              <p className="text-lg mb-8 text-white/80">
+                A powerful platform for managing content, users, and analytics with personalized role-based dashboards.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="glass-effect p-6 rounded-xl border border-white/10 shadow-lg animate-scale-in" style={{ animationDelay: '0ms' }}>
+                <h3 className="text-xl font-semibold mb-3 text-white">Admin</h3>
+                <p className="text-sm text-white/80">Full access to manage users, content, and system logs. Complete control over platform settings.</p>
+              </div>
+              
+              <div className="glass-effect p-6 rounded-xl border border-white/10 shadow-lg animate-scale-in" style={{ animationDelay: '150ms' }}>
+                <h3 className="text-xl font-semibold mb-3 text-white">Editor</h3>
+                <p className="text-sm text-white/80">Create and manage content, engage with users, access analytics to track performance.</p>
+              </div>
+              
+              <div className="glass-effect p-6 rounded-xl border border-white/10 shadow-lg col-span-1 md:col-span-2 animate-scale-in" style={{ animationDelay: '300ms' }}>
+                <h3 className="text-xl font-semibold mb-3 text-white">Viewer</h3>
+                <p className="text-sm text-white/80">Read-only access to browse content and interact with a clean, minimal interface focused on consumption.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-10 right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-10 w-60 h-60 bg-white/5 rounded-full blur-3xl"></div>
+      </div>
     </div>
   );
 }

@@ -128,7 +128,9 @@ export default function UserManagement() {
             {users.map((user) => (
               <tr key={user.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {`${user.firstName} ${user.middleName ? user.middleName + ' ' : ''}${user.lastName}`}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-500">{user.email}</div>
@@ -174,7 +176,7 @@ export default function UserManagement() {
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
             <h3 className="text-lg font-bold mb-4">Edit User Role</h3>
             <p className="mb-4">
-              Change role for <span className="font-bold">{selectedUser.name}</span>
+              Change role for <span className="font-bold">{`${selectedUser.firstName} ${selectedUser.middleName ? selectedUser.middleName + ' ' : ''}${selectedUser.lastName}`}</span>
             </p>
             
             <div className="mb-4">
@@ -214,7 +216,7 @@ export default function UserManagement() {
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
             <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
             <p className="mb-4">
-              Are you sure you want to delete <span className="font-bold">{selectedUser.name}</span>?
+              Are you sure you want to delete <span className="font-bold">{`${selectedUser.firstName} ${selectedUser.middleName ? selectedUser.middleName + ' ' : ''}${selectedUser.lastName}`}</span>?
               This action cannot be undone.
             </p>
             

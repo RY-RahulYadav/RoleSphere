@@ -28,7 +28,10 @@ export default function SystemLogs() {
       setFilteredLogs(logs.filter(log => 
         log.action.toLowerCase().includes(lowerSearchTerm) ||
         log.details.toLowerCase().includes(lowerSearchTerm) ||
-        (typeof log.user !== 'string' && log.user && log.user.name && log.user.name.toLowerCase().includes(lowerSearchTerm))
+        (typeof log.user !== 'string' && log.user && 
+          (log.user.firstName.toLowerCase().includes(lowerSearchTerm) || 
+           log.user.lastName.toLowerCase().includes(lowerSearchTerm) || 
+           (log.user.middleName && log.user.middleName.toLowerCase().includes(lowerSearchTerm))))
       ));
     }
   }, [searchTerm, logs]);
@@ -57,7 +60,7 @@ export default function SystemLogs() {
     if (typeof user === 'string') {
       return 'Unknown User';
     }
-    return user.name || 'Unknown User';
+    return `${user.firstName} ${user.middleName ? user.middleName + ' ' : ''}${user.lastName}` || 'Unknown User';
   };
 
   if (isLoading) {

@@ -131,7 +131,7 @@ export default function PostManagement() {
     if (typeof post.author === 'string') {
       return 'Unknown User';
     }
-    return post.author.name;
+    return `${post.author.firstName} ${post.author.middleName ? post.author.middleName + ' ' : ''}${post.author.lastName}`;
   };
 
   if (isLoading) {

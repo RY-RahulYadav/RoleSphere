@@ -10,11 +10,10 @@ export default function Profile() {
   const { user, login } = useAuth();
   
   const [formData, setFormData] = useState({
-    name: user?.name || '',
+    firstName: user?.firstName || '',
+    middleName: user?.middleName || '',
+    lastName: user?.lastName || '',
     email: user?.email || '',
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,24 +31,13 @@ export default function Profile() {
     setError('');
     setSuccessMessage('');
     
-    // Validate passwords match
-    if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
-      setError('New passwords do not match');
-      setIsSubmitting(false);
-      return;
-    }
-    
     try {
-      const updateData: Partial<User> & { currentPassword?: string; newPassword?: string } = {
-        name: formData.name,
+      const updateData: Partial<User> = {
+        firstName: formData.firstName,
+        middleName: formData.middleName,
+        lastName: formData.lastName,
         email: formData.email,
       };
-      
-      // Only include password fields if user is trying to change password
-      if (formData.currentPassword && formData.newPassword) {
-        updateData.currentPassword = formData.currentPassword;
-        updateData.newPassword = formData.newPassword;
-      }
       
       // Get token from localStorage or auth context
       const token = localStorage.getItem('token');
@@ -64,14 +52,6 @@ export default function Profile() {
         // Just update the user in context with same token
         login(localStorage.getItem('token') || '', response.user);
       }
-      
-      // Clear password fields
-      setFormData(prev => ({
-        ...prev,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-      }));
       
     } catch (err: any) {
       setError(err.message || 'Failed to update profile');
@@ -109,19 +89,50 @@ export default function Profile() {
       <div className="bg-white shadow rounded-lg p-6">
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                required
-              />
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="middleName" className="block text-sm font-medium text-gray-700">
+                  Middle Name
+                </label>
+                <input
+                  type="text"
+                  id="middleName"
+                  name="middleName"
+                  value={formData.middleName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  required
+                />
+              </div>
             </div>
             
             <div>
@@ -137,54 +148,6 @@ export default function Profile() {
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                 required
               />
-            </div>
-            
-            <div className="pt-5 border-t border-gray-200">
-              <h3 className="text-lg font-medium mb-4">Change Password (Optional)</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
-                    Current Password
-                  </label>
-                  <input
-                    type="password"
-                    id="currentPassword"
-                    name="currentPassword"
-                    value={formData.currentPassword}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
-                    New Password
-                  </label>
-                  <input
-                    type="password"
-                    id="newPassword"
-                    name="newPassword"
-                    value={formData.newPassword}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                    Confirm New Password
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                  />
-                </div>
-              </div>
             </div>
             
             <div className="flex justify-end">

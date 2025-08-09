@@ -138,10 +138,10 @@ const Sidebar: React.FC = () => {
         <div className="p-6 flex justify-between items-center border-b border-slate-700/50">
           <div className="flex items-center">
             <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${roleColor} flex items-center justify-center text-white font-bold shadow-lg`}>
-              {user?.name.charAt(0).toUpperCase()}
+              {user?.firstName?.charAt(0).toUpperCase() || ''}
             </div>
             <div className="ml-3">
-              <p className="font-medium text-white">{user.name}</p>
+              <p className="font-medium text-white">{user.firstName} {user.lastName}</p>
               <p className="text-sm text-gray-300 capitalize">{user.role}</p>
             </div>
           </div>
@@ -209,11 +209,11 @@ const Sidebar: React.FC = () => {
         <div className={`p-5 border-b border-gray-100 dark:border-slate-800 ${collapsed ? 'flex justify-center' : ''}`}>
           <div className={`${collapsed ? '' : 'flex items-center'}`}>
             <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${roleColor} flex items-center justify-center text-white font-bold shadow-md`}>
-              {user.name.charAt(0).toUpperCase()}
+              {user.firstName?.charAt(0).toUpperCase() || ''}
             </div>
             {!collapsed && (
               <div className="ml-3">
-                <p className="font-medium">{user.name}</p>
+                <p className="font-medium">{user.firstName} {user.lastName}</p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{user.role}</p>
               </div>
             )}

@@ -20,7 +20,7 @@ export default function EditorPostManagement() {
   });
 
   const { token, user } = useAuth();
-  const isEditor = user?.role === 'editor';
+  const isEditor = user?.role === 'editor' || user?.role === 'admin';
 
   useEffect(() => {
     fetchEditorPosts();
@@ -131,7 +131,7 @@ export default function EditorPostManagement() {
       <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded mb-4">
         <div className="flex items-center">
           <AlertCircle className="mr-2" size={20} />
-          <p>You need editor permissions to manage posts.</p>
+          <p>You need editor or administrator permissions to manage posts.</p>
         </div>
       </div>
     );
@@ -142,80 +142,94 @@ export default function EditorPostManagement() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Posts</h1>
-        <button
-          onClick={openCreateModal}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
-        >
-          <Plus size={16} className="mr-1" />
-          New Post
-        </button>
-      </div>
-      
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
-          <div className="flex items-center">
-            <AlertCircle className="mr-2" size={20} />
-            <p>{error}</p>
+    <div className="relative">
+      <div className={`${isModalOpen || isDeleteModalOpen ? 'opacity-25 pointer-events-none transition-opacity' : ''}`}>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+            {user?.role === 'admin' ? 'My Posts (Admin)' : 'My Posts'}
+          </h1>
+          <button
+            onClick={openCreateModal}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5 px-5 rounded-lg shadow-md flex items-center transition-all"
+          >
+            <Plus size={16} className="mr-2" />
+            New Post
+          </button>
+        </div>
+        
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-400 p-4 mb-6 rounded-lg">
+            <div className="flex items-center">
+              <AlertCircle className="mr-3 flex-shrink-0" size={20} />
+              <p>{error}</p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {posts.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-6 text-center">
-          <p className="text-gray-500">You haven't created any posts yet.</p>
-        </div>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-2">
-          {posts.map(post => (
-            <div key={post._id} className="bg-white rounded-lg shadow overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-                <p className="text-gray-600 mb-4">
-                  {post.content.length > 150
-                    ? `${post.content.substring(0, 150)}...`
-                    : post.content}
-                </p>
-                <div className="text-sm text-gray-500">
-                  <span>Created: {formatDate(post.createdAt)}</span>
-                  {post.updatedAt !== post.createdAt && (
-                    <span className="ml-4">Updated: {formatDate(post.updatedAt)}</span>
-                  )}
+        {posts.length === 0 ? (
+          <div className="bg-white rounded-lg shadow p-6 text-center">
+            <p className="text-gray-500">You haven't created any posts yet.</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2">
+            {posts.map(post => (
+              <div key={post._id} className="bg-white rounded-lg shadow overflow-hidden">
+                <div className="p-6">
+                  <h2 className="text-xl font-bold mb-2">{post.title}</h2>
+                  <p className="text-gray-600 mb-4">
+                    {post.content.length > 150
+                      ? `${post.content.substring(0, 150)}...`
+                      : post.content}
+                  </p>
+                  <div className="text-sm text-gray-500">
+                    <span>Created: {formatDate(post.createdAt)}</span>
+                    {post.updatedAt !== post.createdAt && (
+                      <span className="ml-4">Updated: {formatDate(post.updatedAt)}</span>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 px-6 py-3 flex justify-end space-x-2">
+                  <button
+                    onClick={() => openEditModal(post)}
+                    className="text-indigo-600 hover:text-indigo-900"
+                  >
+                    <Edit size={18} />
+                  </button>
+                  <button
+                    onClick={() => openDeleteModal(post)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    <Trash2 size={18} />
+                  </button>
                 </div>
               </div>
-              
-              <div className="bg-gray-50 px-6 py-3 flex justify-end space-x-2">
-                <button
-                  onClick={() => openEditModal(post)}
-                  className="text-indigo-600 hover:text-indigo-900"
-                >
-                  <Edit size={18} />
-                </button>
-                <button
-                  onClick={() => openDeleteModal(post)}
-                  className="text-red-600 hover:text-red-900"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Create/Edit Post Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl">
-            <h3 className="text-lg font-bold mb-4">
-              {selectedPost ? 'Edit Post' : 'Create New Post'}
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-2xl border border-gray-200 dark:border-slate-700 animate-fade-in">
+            <h3 className="text-xl font-bold mb-6 text-gray-900 dark:text-white border-b pb-4 flex items-center">
+              {selectedPost ? (
+                <>
+                  <Edit size={20} className="mr-2 text-blue-600" />
+                  Edit Post
+                </>
+              ) : (
+                <>
+                  <Plus size={20} className="mr-2 text-blue-600" />
+                  Create New Post
+                </>
+              )}
             </h3>
             
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+              <div className="mb-5">
+                <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
                   Title
                 </label>
                 <input
@@ -223,37 +237,40 @@ export default function EditorPostManagement() {
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+                  className="shadow-sm appearance-none border border-gray-300 dark:border-slate-600 rounded-lg w-full py-3 px-4 text-gray-700 dark:text-white dark:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="Enter post title"
                   required
+                  autoFocus
                 />
               </div>
               
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+              <div className="mb-6">
+                <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
                   Content
                 </label>
                 <textarea
                   name="content"
                   value={formData.content}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-40"
+                  className="shadow-sm appearance-none border border-gray-300 dark:border-slate-600 rounded-lg w-full py-3 px-4 text-gray-700 dark:text-white dark:bg-slate-700 h-48 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="Write your post content here..."
                   required
                 ></textarea>
               </div>
               
-              <div className="flex justify-end space-x-2">
+              <div className="flex justify-end space-x-4 pt-3 border-t border-gray-100 dark:border-slate-700">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                  className="px-6 py-3 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium shadow-md hover:shadow-lg transition-all"
                 >
-                  {selectedPost ? 'Update' : 'Create'}
+                  {selectedPost ? 'Update Post' : 'Create Post'}
                 </button>
               </div>
             </form>
@@ -263,25 +280,29 @@ export default function EditorPostManagement() {
 
       {/* Confirm Delete Modal */}
       {isDeleteModalOpen && selectedPost && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
-            <p className="mb-4">
-              Are you sure you want to delete "{selectedPost.title}"? This action cannot be undone.
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-slate-700 animate-fade-in">
+            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white border-b pb-4 flex items-center">
+              <Trash2 size={20} className="mr-2 text-red-600" />
+              Confirm Delete
+            </h3>
+            <p className="mb-6 text-gray-700 dark:text-gray-300 py-2">
+              Are you sure you want to delete "<span className="font-semibold text-gray-900 dark:text-white">{selectedPost.title}</span>"? <br />
+              <span className="text-red-600 dark:text-red-400 text-sm mt-2 inline-block">This action cannot be undone.</span>
             </p>
             
-            <div className="flex justify-end space-x-2">
+            <div className="flex justify-end space-x-4 pt-3 border-t border-gray-100 dark:border-slate-700">
               <button
                 onClick={() => setIsDeleteModalOpen(false)}
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                className="px-6 py-3 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                className="px-6 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium shadow-md hover:shadow-lg transition-all"
               >
-                Delete
+                Delete Post
               </button>
             </div>
           </div>

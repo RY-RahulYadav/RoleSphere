@@ -4,10 +4,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import EditorPostManagement from '@/components/dashboard/EditorPostManagement';
-import { AlertCircle } from 'lucide-react';
+import Settings from '@/components/dashboard/Settings';
 
-export default function EditorPostsPage() {
+export default function SettingsPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
@@ -32,22 +31,9 @@ export default function EditorPostsPage() {
     return null; // Will redirect in useEffect
   }
 
-  if (user.role !== 'editor' && user.role !== 'admin') {
-    return (
-      <DashboardLayout>
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded mb-4">
-          <div className="flex items-center">
-            <AlertCircle className="mr-2" size={20} />
-            <p>This page is only accessible to editors and administrators.</p>
-          </div>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
   return (
     <DashboardLayout>
-      <EditorPostManagement />
+      <Settings />
     </DashboardLayout>
   );
 }

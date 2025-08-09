@@ -9,7 +9,9 @@ import { User, Mail, Lock, AlertCircle, Loader2, UserPlus } from 'lucide-react';
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -37,7 +39,9 @@ export default function RegisterForm() {
 
     try {
       const response = await apiRequest<AuthResponse>('/auth/register', 'POST', {
-        name: formData.name,
+        firstName: formData.firstName,
+        middleName: formData.middleName,
+        lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
       });
@@ -64,21 +68,52 @@ export default function RegisterForm() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
-            Full Name
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <User className="h-5 w-5 text-gray-400" />
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+              First Name
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <User className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                placeholder="John"
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 dark:text-white"
+                required
+              />
             </div>
+          </div>
+          
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+              Middle Name
+            </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="middleName"
+              value={formData.middleName}
               onChange={handleChange}
-              placeholder="John Doe"
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 dark:text-white"
+              placeholder="M"
+              className="block w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 dark:text-white"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+              Last Name
+            </label>
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Doe"
+              className="block w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 dark:text-white"
               required
             />
           </div>

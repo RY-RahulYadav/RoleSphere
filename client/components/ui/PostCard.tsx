@@ -92,14 +92,14 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
     if (typeof post.author === 'string') {
       return 'Unknown User';
     }
-    return post.author?.name || 'Unknown User';
+    return `${post.author?.firstName} ${post.author?.middleName ? post.author.middleName + ' ' : ''}${post.author?.lastName}` || 'Unknown User';
   };
   
   const getCommentAuthorName = (comment: PostComment): string => {
     if (typeof comment.author === 'string') {
       return 'Unknown User';
     }
-    return comment.author?.name || 'Unknown User';
+    return `${comment.author?.firstName} ${comment.author?.middleName ? comment.author.middleName + ' ' : ''}${comment.author?.lastName}` || 'Unknown User';
   };
 
   const getAuthorRole = (): string => {
@@ -316,7 +316,7 @@ export default function PostCard({ post, onDeletePost, onUpdatePost, showActions
           {/* Comment Input */}
           <div className="flex items-start mb-4">
             <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-3 mt-1 flex-shrink-0">
-              {user?.name?.charAt(0).toUpperCase()}
+              {user?.firstName?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div className="flex-grow relative">
               <input

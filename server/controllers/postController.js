@@ -46,17 +46,17 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-// Get editor's own posts
+// Get editor's or admin's own posts
 exports.getEditorPosts = async (req, res) => {
   try {
-    // Only fetch posts created by the logged-in editor
+    // Fetch posts created by the logged-in editor or admin
     const posts = await Post.find({ author: req.user._id })
       .sort({ createdAt: -1 })
       .populate('author', 'firstName middleName lastName email role');
     
     res.json(posts);
   } catch (error) {
-    console.error('Get editor posts error:', error.message);
+    console.error('Get editor/admin posts error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -90,9 +90,9 @@ exports.updatePost = async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
     
-    // Editors can only edit their own posts
+    // Editors and admins can only edit their own posts
     if (post.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Not authorized to update this post. Editors can only edit their own posts.' });
+      return res.status(403).json({ message: 'Not authorized to update this post. You can only edit your own posts.' });
     }
     
     // Update post
@@ -133,9 +133,9 @@ exports.deletePost = async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
     
-    // Editors can only delete their own posts
+    // Editors and admins can only delete their own posts
     if (post.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Not authorized to delete this post. Editors can only delete their own posts.' });
+      return res.status(403).json({ message: 'Not authorized to delete this post. You can only delete your own posts.' });
     }
     
     // Delete post
